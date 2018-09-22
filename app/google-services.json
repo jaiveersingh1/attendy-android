@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1029510740323",
+    "firebase_url": "https://attendy-test.firebaseio.com",
+    "project_id": "attendy-test",
+    "storage_bucket": "attendy-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029510740323:android:ccb9790fb34c8176",
+        "android_client_info": {
+          "package_name": "com.fullstack.attendy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1029510740323-atc72rfuoi9pfvh4r1unkkqj3eaf732b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fullstack.attendy",
+            "certificate_hash": "6c6d02bac49c977fcd445ac7fc31b0d023ee348d"
+          }
+        },
+        {
+          "client_id": "1029510740323-cu2j12htn6g9v4j35ee39rhborq57bip.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLQZq3_mfjk5oQaH6Hr8oJgZs6aM2m8NQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1029510740323-fhf1oj10os4pjqp66fp5joit2g64ptj3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

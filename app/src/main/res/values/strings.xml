@@ -3,4 +3,5 @@
     <string name="clickInstruction">Are you in class today?</string>
     <string name="waitInstruction">Please wait while we confirm</string>
     <string name="doneInstruction">All done! Thanks :)</string>
+    <string name="title_activity_alarm">Alarm</string>
 </resources>

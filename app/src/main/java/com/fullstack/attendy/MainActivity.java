@@ -1,8 +1,13 @@
 package com.fullstack.attendy;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +38,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Debug_BOB";
@@ -76,26 +82,26 @@ public class MainActivity extends AppCompatActivity {
         instructionsText = findViewById(R.id.instructionText);
         progressBar = findViewById(R.id.progressBar);
 
+        // Set the alarm to start at 8:30 a.m.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+        calendar.set(Calendar.HOUR_OF_DAY, 4);
+        calendar.set(Calendar.MINUTE, 0);
+
         connectBtn = findViewById(R.id.connectBtn);
         connectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendNearbyMessage(email);
                 sendIdentityToServer();
-                //confirmOtherToServer("bob@berkeley.edu");
 
                 connectBtn.setEnabled(false);
                 instructionsText.setText(R.string.waitInstruction);
                 progressBar.setVisibility(View.VISIBLE);
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        instructionsText.setText(R.string.doneInstruction);
-                        progressBar.setVisibility(View.INVISIBLE);
-                        connectBtn.setVisibility(View.INVISIBLE);
-                    }
-                }, 10 * 1000);
+                new DelayTask().execute();
+
             }
         });
 
@@ -104,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         mMessageListener = new MessageListener() {
             @Override
             public void onFound(Message message) {
-                Toast.makeText(MainActivity.this, "Received:" + new String(message.getContent()), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Received:" + new String(message.getContent()), Toast.LENGTH_SHORT).show();
                 confirmOtherToServer(new String(message.getContent()));
             }
         };
@@ -127,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        Nearby.getMessagesClient(this).subscribe(mMessageListener);
     }
 
     private void sendIdentityToServer()
@@ -256,7 +261,46 @@ public class MainActivity extends AppCompatActivity {
         {
             name = data.getStringExtra("name");
             email = data.getStringExtra("email");
+            Nearby.getMessagesClient(this).subscribe(mMessageListener);
         }
+    }
+
+    class DelayTask extends AsyncTask<Void, Integer, String> {
+        int count = 0;
+        int maxCount = 10; // TODO: 9/22/18 CHANGE MAX COUNT to become 60 * 10 for 10 minutes
+
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(ProgressBar.VISIBLE);
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            while (count < maxCount) {
+                SystemClock.sleep(1000);
+                count++;
+                progressBar.setProgress(100 * count / maxCount);
+            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    doneAsync();
+                }
+            });
+            return "Complete";
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            progressBar.setProgress(values[0]);
+        }
+    }
+
+    private void doneAsync()
+    {
+        instructionsText.setText(R.string.doneInstruction);
+        progressBar.setVisibility(View.INVISIBLE);
+        connectBtn.setVisibility(View.INVISIBLE);
     }
 
 }
