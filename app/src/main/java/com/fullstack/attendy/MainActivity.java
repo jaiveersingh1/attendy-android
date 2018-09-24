@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String PUSH_TAG = "TAG";
 
     Button connectBtn;
+    Button recheckBtn;
     TextView instructionsText;
     TextView countdownText;
 
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         instructionsText = findViewById(R.id.instructionText);
-        countdownText = findViewById(R.id.countdown);
+        countdownText = findViewById(R.id.countdownText);
 
         // Set the alarm to start at 8:30 a.m.
         Calendar calendar = Calendar.getInstance();
@@ -102,6 +103,15 @@ public class MainActivity extends AppCompatActivity {
 
                 new DelayTask().execute();
 
+            }
+        });
+
+        recheckBtn = findViewById(R.id.recheckBtn);
+        recheckBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                startActivity(new Intent(MainActivity.this, MainActivity.class));
             }
         });
 
@@ -267,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
 
     class DelayTask extends AsyncTask<Void, Integer, String> {
         int count = 0;
-        int maxCount = 10; // TODO: 9/22/18 CHANGE MAX COUNT to become 60 * 10 for 10 minutes
+        int maxCount = 60 * 10;
 
         @Override
         protected void onPreExecute() {
@@ -279,7 +289,14 @@ public class MainActivity extends AppCompatActivity {
             while (count < maxCount) {
                 SystemClock.sleep(1000);
                 count++;
-                countdownText.setText(100 * count);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int durationSeconds = maxCount - count;
+                        countdownText.setText((String.format("%02d:%02d",
+                                (durationSeconds % 3600) / 60, (durationSeconds % 60))));
+                    }
+                });
             }
             runOnUiThread(new Runnable() {
                 @Override
@@ -298,9 +315,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void doneAsync()
     {
-        instructionsText.setText(R.string.doneInstruction);
-        instructionsText.setVisibility(View.INVISIBLE);
+        countdownText.setVisibility(View.INVISIBLE);
         connectBtn.setVisibility(View.INVISIBLE);
+        instructionsText.setText(R.string.doneInstruction);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recheckBtn.setVisibility(View.VISIBLE);
+            }
+        },4000);
     }
 
 }

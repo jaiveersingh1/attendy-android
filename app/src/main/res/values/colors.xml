@@ -2,6 +2,6 @@
 <resources>
     <color name="Attendy_red">#e32b2B</color>
     <color name="Attendy_dark_red">#B1000d</color>
-    <color name="grey">#dbdbdb</color>
+    <color name="black">#000000</color>
     <color name="off_white">#ececec</color>
 </resources>
