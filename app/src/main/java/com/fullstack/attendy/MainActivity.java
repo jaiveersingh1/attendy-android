@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button connectBtn;
     TextView instructionsText;
-    ProgressBar progressBar;
+    TextView countdownText;
 
     MessageListener mMessageListener;
     ArrayList<Message> messageList;
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         instructionsText = findViewById(R.id.instructionText);
-        progressBar = findViewById(R.id.progressBar);
+        countdownText = findViewById(R.id.countdown);
 
         // Set the alarm to start at 8:30 a.m.
         Calendar calendar = Calendar.getInstance();
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
                 connectBtn.setEnabled(false);
                 instructionsText.setText(R.string.waitInstruction);
-                progressBar.setVisibility(View.VISIBLE);
+                countdownText.setVisibility(View.VISIBLE);
 
                 new DelayTask().execute();
 
@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            progressBar.setVisibility(ProgressBar.VISIBLE);
+            countdownText.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
             while (count < maxCount) {
                 SystemClock.sleep(1000);
                 count++;
-                progressBar.setProgress(100 * count / maxCount);
+                countdownText.setText(100 * count);
             }
             runOnUiThread(new Runnable() {
                 @Override
@@ -292,14 +292,14 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-            progressBar.setProgress(values[0]);
+
         }
     }
 
     private void doneAsync()
     {
         instructionsText.setText(R.string.doneInstruction);
-        progressBar.setVisibility(View.INVISIBLE);
+        instructionsText.setVisibility(View.INVISIBLE);
         connectBtn.setVisibility(View.INVISIBLE);
     }
 

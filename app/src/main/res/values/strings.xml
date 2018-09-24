@@ -2,6 +2,7 @@
     <string name="app_name">Attendy</string>
     <string name="clickInstruction">Are you in class today?</string>
     <string name="waitInstruction">Please wait while we confirm</string>
-    <string name="doneInstruction">All done! Thanks :)</string>
+    <string name="doneInstruction">All done! Thanks</string>
     <string name="title_activity_alarm">Alarm</string>
+    <string name="sign_in_command">Please sign in using your Berkeley Google Account</string>
 </resources>
