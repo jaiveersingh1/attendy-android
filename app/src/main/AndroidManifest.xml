@@ -23,7 +23,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
-        <receiver android:name=".Alarm" />
     </application>
 
 </manifest>
