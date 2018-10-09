@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     String name;
     String email;
 
-    String url ="http://40.114.119.189";
+    String url ="http://137.135.115.171";
 
 
     @Override
@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFound(Message message) {
                 //Toast.makeText(MainActivity.this, "Received:" + new String(message.getContent()), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "BOBOBOB WE FOUND A THING: " + new String(message.getContent()));
                 confirmOtherToServer(new String(message.getContent()));
             }
         };
@@ -277,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
 
     class DelayTask extends AsyncTask<Void, Integer, String> {
         int count = 0;
-        int maxCount = 60 * 10;
+        int maxCount = 60 * 1;
 
         @Override
         protected void onPreExecute() {
